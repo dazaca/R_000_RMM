@@ -1,0 +1,91 @@
+---
+title: "TESTs"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r cars}
+
+# https://es.khanacademy.org/math/statistics-probability/describing-relationships-quantitative-data/assessing-the-fit-in-least-squares-regression/a/r-squared-intuition?modal=1
+
+x <-c(4,5,6,7,8,9,10,11,12,13,14)
+y <-c(4.25,5.7,7.25,4.8,7,8.8,8,8.3,10.8,7.6,9.9)
+
+# Hallar la recta de regresión simple. Dibujar el gráﬁco de los residuos con la densidad y el gráﬁco con las predicciones. Calcular la suma de cuadrados de los residuos.
+  
+recta.velocidad <- lsfit(x,y) 
+e <- recta.velocidad$residuals
+pred <- y - e
+
+
+plot(x, y, type="p", xlab ="densidad", ylab="raiz(velocidad)",
+     xlim=c(0,14), ylim=c(0,14),main="Gráfico de dispersión con recta y = Ax+B") 
+# abline(intercept, slope)
+abline(recta.velocidad)
+
+par(mfrow=c(1,2)) 
+par(pty="s")
+plot(x,e,xlab="x",ylab="residuos", ylim=c(-1,1)) 
+abline(h=0, lty=2) 
+
+plot(pred,e,xlab="predicción",ylab="residuos", ylim=c(-1,1)) 
+abline(h=0, lty=2)
+abline(recta.velocidad)
+# La suma de cuadrados de los residuos es: 
+sum(e^2)
+
+
+
+htmltools::img(src = knitr::image_uri( "lin_reg.png"))
+
+
+# Convertimos a dataframe:
+df <- data.frame(x,y)
+str(df)
+lmod <- lm(y ~ x, data = df)
+lmodsum <- summary(lmod)
+print(lmodsum)
+# r^2 = 0.6644 (coeficiente de determinación o Coefficient of determination or coëfficient)
+
+
+res <- residuals(lmod)
+res
+# Fit a regression model with Y as the response and X as predictor:
+fit <-fitted(lmod)
+fit
+
+# Compute the correlation of the residuals with the ﬁtted values:
+cor(fit,res)
+
+# Compute the correlation of the residuals with the predictor "x":
+cor(res,df$x)
+
+# Coeficiente de regresión de dicha variable x (slope):
+lmod$coefficients["x"]
+# Similarly:
+lmod$coefficients[1]
+
+# Compute the correlation between the ﬁtted values and the response (Coefficientes de correlación):
+# r <- cor(fit,df)
+r <- cor(fitted(lmod),df)
+r^2
+summary(lmod)
+
+########################### Working with df:
+
+with(df, plot(y ~ x))
+abline(recta1 <- lm(y ~ x, df))
+
+abline(h=mean(df$y), lty=2)
+abline(v=mean(df$x), lty=2)
+
+# Intersection point :
+
+print(c(mean(df$x), mean(df$y)))
+```
+
