@@ -87,5 +87,23 @@ abline(v=mean(df$x), lty=2)
 # Intersection point :
 
 print(c(mean(df$x), mean(df$y)))
+
+# Some Fisher tests:
+htmltools::img(src = knitr::image_uri( "conting.png"))
+datos <- data.frame(tipow = c(rep("irl",11), rep("esc",11)), acierto = c(rep(TRUE,2), rep(FALSE,9), rep(TRUE,7), rep(FALSE,4)))
+tabla <- table(datos$tipow, datos$acierto, dnn = c("Tipo whisky", "Acierta"))
+fisher.test(x = tabla, alternative = "two.sided")
+
+# The F statistic:
+# https://www.statisticshowto.com/probability-and-statistics/f-statistic-value-test/
+
+### INFERENCE:
+
+# install.packages("ellipse")
+lm(formula = Species ~ Area + Elevation + Nearest + Scruz + Adjacent, data = gala)
+require(ellipse)
+plot(ellipse(lmod,c(2,6)),type="l",ylim=c(-0.13,0))
+
+
 ```
 
